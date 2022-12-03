@@ -9,13 +9,13 @@ body {
 }
 
 h1 {
-  font-family: Helvetica;
   font-weight: 700;
   font-size: 500%;
 }
 
+
 h2 {
-  font-family: helvetica;
+  font-size: 200%;
 }
 
 
@@ -23,3 +23,13 @@ p {
   /* font-family: courier; */
   font-size: 80%;
 }
+
+a { color: cyan; }
+
+a:link { text-decoration: none; }
+
+a:visited { text-decoration: none; }
+a:hover { text-decoration: underline; 
+  color: magenta;
+}
+a:active { text-decoration: underline; }
