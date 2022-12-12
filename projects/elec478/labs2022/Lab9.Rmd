@@ -1,0 +1,221 @@
+---
+title: "Lab 9"
+author: "Quan Le"
+date: '`r Sys.Date()`'
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Naive Bayes (NB) Classification
+
+```{r}
+library(MASS)
+library(tidyverse)
+library(naivebayes)
+library(ggplot2)
+
+n = 200
+p = 2
+mu = rep(0, p); Sigma = diag(p)
+x1 = mvrnorm(n, mu, Sigma)
+x2 = mvrnorm(n, c(4, 0), Sigma)
+x3 = mvrnorm(n, c(2, 2*sqrt(3)), Sigma)
+
+x = rbind(x1, x2, x3) %>% as.data.frame() %>% 
+  mutate(class = c(rep(0, n), rep(1, n), rep(2, n))) %>%
+  rename(X1 = V1, X2 = V2)
+```
+
+
+```{r}
+# Sample data
+ggplot(x) +
+  geom_point(
+    aes(x = X1, y = X2, color = factor(class), shape = factor(class)),
+    alpha = 0.7
+  ) +
+  coord_fixed(ratio = 1) +
+  scale_color_brewer(type = "div", palette = "Dark2") +
+  labs(title = "Sample Data")
+```
+
+
+```{r}
+x1p = seq(-4, 8, by = 0.05)
+x2p = seq(-4, 8, by = 0.05)
+zp <- expand.grid(X1 = x1p, X2 = x2p)
+
+fit = naive_bayes(formula = factor(class) ~ X1 + X2, data = x)
+yhat = predict(fit, newdata = zp, type = "prob")
+z <- zp %>% 
+  bind_cols(data.frame(p1 = yhat[,1], p2 = yhat[,2], p3 = yhat[,3])) 
+```
+
+
+```{r}
+ggplot(z) +
+  geom_point(
+    data = x,
+    aes(x = X1, y = X2, color = factor(class), shape = factor(class)),
+    alpha = 0.7
+  ) + 
+  geom_contour(
+    aes(x = X1, y = X2, z = p1), 
+    color    = "black",
+    breaks   = 0.5
+  ) +
+  geom_contour(
+    aes(x = X1, y = X2, z = p2), 
+    color    = "black",
+    breaks   = 0.5
+  ) +
+  geom_contour(
+    aes(x = X1, y = X2, z = p3), 
+    color    = "black",
+    breaks   = 0.5
+  ) +
+  coord_fixed(ratio = 1) +
+  scale_color_brewer(type = "div", palette = "Dark2") + 
+  labs(title = "Decision Boundary for Naive Bayes")
+```
+
+
+# Linear Discriminant Analysis (LDA)
+
+```{r}
+mu = rep(0, p); Sigma = rbind(c(1, .5), c(.5, 1))
+x1 = mvrnorm(n, mu, Sigma)
+x2 = mvrnorm(n, c(4, 0), Sigma)
+x3 = mvrnorm(n, c(2, 2*sqrt(3)), Sigma)
+
+x = rbind(x1, x2, x3) %>% as.data.frame() %>% 
+  mutate(class = c(rep(0, n), rep(1, n), rep(2, n))) %>%
+  rename(X1 = V1, X2 = V2)
+
+
+# Sample data
+ggplot(x) +
+  geom_point(
+    aes(x = X1, y = X2, color = factor(class), shape = factor(class)),
+    alpha = 0.7
+  ) +
+  coord_fixed(ratio = 1) +
+  scale_color_brewer(type = "div", palette = "Dark2") +
+  labs(title = "Sample Data")
+```
+
+```{r}
+fit = lda(class ~., data = x)
+yhat = predict(fit, newdata = zp, type = "prob")$posterior
+z <- zp %>% 
+  bind_cols(data.frame(p1 = yhat[,1], p2 = yhat[,2], p3 = yhat[,3]))
+ggplot(z) +
+  geom_point(
+    data = x,
+    aes(x = X1, y = X2, color = factor(class), shape = factor(class)),
+    alpha = 0.7
+  ) + 
+  geom_contour(
+    aes(x = X1, y = X2, z = p1), 
+    color    = "black",
+    breaks   = 0.5
+  ) +
+  geom_contour(
+    aes(x = X1, y = X2, z = p2), 
+    color    = "black",
+    breaks   = 0.5
+  ) +
+  geom_contour(
+    aes(x = X1, y = X2, z = p3), 
+    color    = "black",
+    breaks   = 0.5
+  ) +
+  coord_fixed(ratio = 1) +
+  scale_color_brewer(type = "div", palette = "Dark2") + 
+  labs(title = "Decision Boundary for LDA")
+
+```
+
+
+# Fisher's Discriminant Analysis
+
+```{r}
+library(GGally)
+
+load("data/wine.Rdata")
+attach(wine)
+head(wine)
+str(wine)
+
+wine %>% 
+  ggpairs(columns = c("Alcohol",
+                      "Malic",
+                      "Ash",
+                      "Alcalinity",
+                      "Magnesium",
+                      "Phenols",
+                      "Flavanoids",
+                      "Nonflavanoids",
+                      "Proanthocyanins",
+                      "Color",
+                      "Hue",
+                      "Dilution",
+                      "Proline"),
+          mapping = aes(color = Type))
+```
+
+
+```{r}
+library(klaR)
+
+# LDA
+wine.lda <- lda(Type ~., data = wine)
+wine.lda
+
+# PLot histograms of Fisher linear discriminants
+wine.lda.values <- predict(wine.lda)
+ldahist(wine.lda.values$x[,1], g = Type)
+ldahist(wine.lda.values$x[,2], g = Type)
+
+# Plot using the Fisher linear discriminants
+# convert linear discriminants to data frame 
+newdata <- data.frame(type = wine[,1], lda = wine.lda.values$x)
+newdata$class <- as.numeric(newdata$type)
+lda_plot <- ggplot(newdata, aes(x=lda.LD1, y=lda.LD2)) + 
+  geom_point(aes(fill = type), pch=21, color='black', size = 2.5, alpha=0.5)
+
+lda_plot
+
+# Partition plot (decision boundaries)
+partimat(Type ~ Alcohol + Alcalinity, data = wine, method = "lda")
+
+# Adding more variables
+partimat(Type ~ Alcohol + Alcalinity + Ash + Magnesium, data = wine, method = "lda")
+
+# In LDA space
+partimat(type~lda.LD2 + lda.LD1, data=newdata, method='lda')
+```
+
+
+# Logistic Regression
+
+```{r}
+n = 500
+p = 1
+x = cbind(1, sort(rnorm(n)))
+B = rbind(c(0, 1), c(0, 2), c(1, 2), c(-1, 2))
+for (i in 1:nrow(B)) {
+  y = rbinom(n, 1, 1 / (1 + exp(-x %*% B[i,]))) 
+  fit = glm(y ~ x, family = "binomial")
+  
+  plot(x[,2], y, main=paste("beta =", B[i,2], "beta_0 =", B[i,1]))
+  lines(x[,2], fit$fitted.values)
+}
+```
+

@@ -1,0 +1,4 @@
+"0","cols = as.numeric(as.factor(rownames(presidential_speech)))"
+"0","Dmat = dist(presidential_speech)"
+"0","com.hclust = hclust(Dmat,method=""complete"")"
+"0","plot(com.hclust,cex=.7,main=""Complete Linkage"")"

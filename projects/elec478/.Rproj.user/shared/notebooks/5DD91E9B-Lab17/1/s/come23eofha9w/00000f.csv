@@ -1,0 +1,2 @@
+"0","sing.hclust = hclust(Dmat,method=""single"")"
+"0","plot(sing.hclust,cex=.7,main=""Single Linkage"")"

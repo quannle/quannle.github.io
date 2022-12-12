@@ -1,0 +1,3 @@
+"0","ns.est <- glasso(s=sachscor, rho=lambda, approx=TRUE, penalize.diagonal=FALSE)"
+"0","A3 <- abs(ns.est$wi) > 1E-16; diag(A3) <- 0"
+"0","g3 <- graph.adjacency(A3, mode=""undirected"")"

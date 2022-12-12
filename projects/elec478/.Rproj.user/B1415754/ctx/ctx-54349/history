@@ -1,0 +1,33 @@
+?require
+knitr::opts_chunk$set(echo = TRUE)
+load("data/digits.RData")
+library(fastICA)
+require("fastICA")
+K = 20
+icafit = fastICA(t(dat38),n.comp=K)
+library(fastICA)
+require("fastICA")
+dat38 = rbind(digits[which(rownames(digits)==3),],digits[which(rownames(digits)==8),])
+K = 20
+icafit = fastICA(t(dat38),n.comp=K)
+#plot independent source signals
+options(width = 60)
+par(mfrow=c(4,5),mar = c(2, 2, 2, 2))
+for(i in 1:K){
+imagedigit(icafit$S[,i])
+}
+#Note that this may take a while to run - try using smaller values of K
+library(NMF)
+install.packages("NMF")
+install.packages("Biobase")
+av <- available.packages(filters=list())
+av[av[, "Package"] == "Biobase", ]
+#Note that this may take a while to run - try using smaller values of K
+library(NMF)
+install.packages("NMF")
+install.packages("NMF")
+knitr::opts_chunk$set(echo = TRUE)
+load("data/digits.RData")
+#Note that this may take a while to run - try using smaller values of K
+library(NMF)
+install.packages("Biobase")

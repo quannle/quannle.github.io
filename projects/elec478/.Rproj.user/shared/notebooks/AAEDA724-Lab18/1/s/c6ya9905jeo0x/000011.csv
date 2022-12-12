@@ -1,0 +1,6 @@
+"0","X <- data.matrix(scale(sachsdat))"
+"0","neth = huge(X,method=""mb"")"
+"1","Conducting Meinshausen & Buhlmann graph estimation (mb)...."
+"1","done
+"
+"0","plot(neth)"

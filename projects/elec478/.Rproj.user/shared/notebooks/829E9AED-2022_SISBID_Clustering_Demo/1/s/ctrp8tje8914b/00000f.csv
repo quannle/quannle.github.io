@@ -1,0 +1,2 @@
+"0","K = 9"
+"0","SC_NCI = specClust(ncidat, centers=K, nn = 7, method = ""symmetric"", gmax=NULL)"

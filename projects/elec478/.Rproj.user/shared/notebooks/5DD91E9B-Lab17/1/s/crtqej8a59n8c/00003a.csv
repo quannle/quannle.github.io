@@ -1,0 +1,1 @@
+"0","text(Z[,1],Z[,2],rownames(presidential_speech),cex=.75,col=pres.spec$cluster)"

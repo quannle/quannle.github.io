@@ -1,0 +1,3 @@
+"0","Dmat = dist(presidential_speech,method=""manhattan"") #L1 distance"
+"0","com.hclust = hclust(Dmat,method=""complete"")"
+"0","plot(com.hclust,cex=.7,main=""Complete Linkage - L1 Dist"")"

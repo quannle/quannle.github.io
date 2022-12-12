@@ -1,0 +1,3 @@
+"0","#MDS"
+"0","Dmat = dist(chu.x,method=""maximum"") #Manhattan (L1) Distance"
+"0","mdsres = cmdscale(Dmat,k=5)"

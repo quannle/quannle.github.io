@@ -1,0 +1,2 @@
+"0","ggplot(data = Data) + "
+"0","  geom_point(mapping = aes(x = x1,y = x2,color = label),pch = 16)"

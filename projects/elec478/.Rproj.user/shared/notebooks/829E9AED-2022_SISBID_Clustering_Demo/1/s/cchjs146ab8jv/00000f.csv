@@ -1,0 +1,1 @@
+"0","heatmap(x,col=gcol2,hclustfun=function(x) hclust(x,method=""ward.D""))"

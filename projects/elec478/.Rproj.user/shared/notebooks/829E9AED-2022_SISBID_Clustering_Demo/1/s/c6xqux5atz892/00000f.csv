@@ -1,0 +1,6 @@
+"0","X = scale(ncidat,center=TRUE,scale=FALSE)"
+"0","sv = svd(X)"
+"0","U = sv$u"
+"0","V = sv$v"
+"0","D = sv$d"
+"0","Z = X%*%V"

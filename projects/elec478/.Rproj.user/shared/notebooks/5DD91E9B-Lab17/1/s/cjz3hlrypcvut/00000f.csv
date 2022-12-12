@@ -1,0 +1,2 @@
+"0","ave.hclust = hclust(Dmat,method=""average"")"
+"0","plot(ave.hclust,cex=.7,main=""Average Linkage"")"

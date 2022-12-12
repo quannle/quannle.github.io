@@ -1,0 +1,2 @@
+"0",""
+"0","plot(chu.umap$layout[,1],y=chu.umap$layout[,2], type ='n', main = ""UMAP on cells"", xlab = ""UMAP1"", ylab = ""UMAP2"")"

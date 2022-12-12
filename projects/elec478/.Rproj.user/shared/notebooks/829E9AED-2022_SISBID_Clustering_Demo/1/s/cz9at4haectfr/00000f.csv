@@ -1,0 +1,4 @@
+"0","ggplot(PCData,mapping=aes(x = PC1,y= PC2,color = PredLabel)) + "
+"0","  geom_text(mapping=aes(label = CancerType)) + "
+"0","  geom_point(data = GroupData,size = 4) + "
+"0","  theme(legend.position=""none"")"

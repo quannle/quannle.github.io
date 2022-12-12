@@ -1,0 +1,2 @@
+"0","heatmap(results[[4]][[""consensusMatrix""]], labRow=rownames(pdat), labCol=rownames(pdat))"
+"0",""

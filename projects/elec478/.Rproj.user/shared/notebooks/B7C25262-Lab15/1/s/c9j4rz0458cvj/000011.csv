@@ -1,0 +1,6 @@
+"0","load(""data/chu.rdata"")"
+"0","hiseq = readRDS(""data/hiseq.rds"")"
+"0",""
+"0","chu.x = t(chu$sc_cnt)"
+"0","chu.y = chu$sc_label"
+"0","chu.colors = as.integer(factor(chu.y))"

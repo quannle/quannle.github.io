@@ -1,0 +1,2 @@
+"0","K = 9"
+"0","km = kmeans(ncidat,centers=K)"

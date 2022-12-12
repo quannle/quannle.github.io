@@ -1,0 +1,72 @@
+---
+title: "Lab2_Regression_CV"
+author: "quan le"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r libraries, echo=FALSE}
+# install packages if needed using:
+# install.packages("<package>")
+
+# libraries required
+library(MASS)
+library(leaps)
+library(glmnet)
+library(ncvreg)
+# library(tidyverse)
+# library(caret)
+# library(splines)
+# library(mgcv)
+```
+
+
+```{r}
+#load in ozone data (taken from "cosso" R package)
+ozone = read.csv("data/ozone.csv")
+
+#take a look at the data
+plot(ozone,pch=16,cex=.5)
+```
+
+
+```{r}
+#least squares
+#least squares using the lm() function
+fit = lm(ozone~.,data=ozone)
+summary(fit)
+```
+
+
+```{r}
+#directly fit least squares
+Y = as.numeric(ozone[,1])
+aX = cbind(rep(1,nrow(ozone)),as.matrix(ozone[,-1])) #intercept
+
+#estimated coefficients
+betahat = solve(t(aX)%*%aX)%*%t(aX)%*%Y
+
+#hat matrix
+H = aX%*%solve(t(aX)%*%aX)%*%t(aX)
+evH =  eigen(H)
+evH$values[1:10]
+```
+
+
+```{r}
+#fitted data
+Yhat = aX%*%betahat
+Yhat = H%*%Y
+
+#compare to lm()
+cbind(betahat,t(t(fit$coefficients)))
+plot(predict(fit),Yhat)
+```
+

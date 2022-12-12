@@ -1,0 +1,70 @@
+---
+title: "Lab 11.1"
+author: "quan le"
+date: "`r Sys.Date()`"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
+```
+
+
+```{r, include=FALSE}
+library(glmnet)
+```
+
+
+# Logistic Regression
+
+```{r}
+# Classifying email as spam!!!
+
+# reading in data
+data = read.csv("data/spam_dat.csv",header=FALSE)
+ndat = read.delim("data/spam_vars.txt",header=FALSE)
+
+# parsing variable names
+nams = NULL
+for(i in 1:nrow(ndat))
+{
+  vec = strsplit(as.character(ndat[i,]),split="_")
+  for(j in 1:length(vec[[1]]))
+  {
+    if(length(grep(":",vec[[1]][j]))>0)
+    {
+      vars = strsplit(vec[[1]][j],split=":")
+      nams = c(nams,vars[[1]][1])
+    }
+  }
+}
+
+Y = data[,58]
+n = length(Y)
+sum(Y)/n
+```
+
+
+```{r}
+X = as.matrix(log(1 + data[,1:57]))
+colnames(X) = nams
+X = scale(X)/sqrt(n-1)
+dat = data.frame(Y,X)
+
+# taking a subset of data
+sdat = data.frame(Y,dat$george,dat$meeting,dat$total,dat$re,dat$edu,dat$free,dat$your)
+plot(sdat,pch=16,cex=.5)
+```
+
+
+```{r}
+library(plotmo)
+
+fit = glmnet(as.matrix(sdat[,-which(colnames(sdat)=="Y")]), 
+             as.matrix(sdat$Y), family="binomial")
+# beta for different lambda
+fit$beta[, c(length(fit$lambda) %/% 10, length(fit$lambda) %/% 4, length(fit$lambda))]
+plot_glmnet(fit, label=TRUE)
+```

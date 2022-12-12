@@ -1,0 +1,23 @@
+"0","#Note that this may take a while to run - try using smaller values of K"
+"0","library(NMF)"
+"2","Warning: package ‘NMF’ was built under R version 4.0.5"
+"2","Loading required package: pkgmaker
+"
+"2","Loading required package: registry
+"
+"2","Loading required package: rngtools
+"
+"2","Loading required package: cluster
+"
+"2","Warning: namespace ‘Biobase’ is not available and has been replaced
+by .GlobalEnv when processing object ‘<unknown>’"
+"2","Warning: namespace ‘Biobase’ is not available and has been replaced
+by .GlobalEnv when processing object ‘<unknown>’"
+"2","Warning: namespace ‘Biobase’ is not available and has been replaced
+by .GlobalEnv when processing object ‘<unknown>’"
+"2","Loading required package: Biobase
+"
+"2","Warning: there is no package called ‘Biobase’"
+"2","Error: package or namespace load failed for ‘NMF’ in .requirePackage(package):
+ unable to find required package ‘Biobase’
+"

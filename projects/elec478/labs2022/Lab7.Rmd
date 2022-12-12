@@ -1,0 +1,102 @@
+---
+title: "Lab 7"
+author: "quan le"
+date: "`r Sys.Date()`"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(glmnet)
+library(ISLR)
+library(ggplot2)
+
+x=model.matrix(Salary~.,Hitters)[,-1]
+y=na.omit(Hitters$Salary)
+
+set.seed(1)
+train=sample(1:nrow(x), nrow(x)/2)
+test=(-train)
+```
+
+# Hyperparameter Tuning for Interpretation
+
+## Stability Principle
+
+```{r}
+alpha = 1 # lasso
+k = 25 # number of folds for cv
+grid = exp(1)^seq(10,-1,length=100) # the sequence of lambda
+
+cvfit = cv.glmnet(x[train,], y[train], alpha=alpha, lambda=grid, nfolds=k)
+plot(cvfit)
+title(paste("MSE for nfolds = ", k), line = 2)
+
+print(cvfit)
+
+# plot lambda selected via CV
+plot(cvfit$glmnet.fit)
+abline(v=cvfit$lambda.min)
+title("Lambda selected via CV")
+```
+
+
+```{r}
+# bootstrap data, fit lasso with fixed lambda = lambda_cv
+B = 200
+freq = rep(0, ncol(x))
+for (b in 1:B) {
+  bootstrap = sample(train, length(train), replace=TRUE)
+  fit = glmnet(x[bootstrap,], y[bootstrap], alpha=alpha, lambda=cvfit$lambda.min)
+  freq = freq + (fit$beta != 0) # record which features are selected
+}
+# temp[i,j] = 101 - j if beta[i,j] != 0
+temp = (cvfit$glmnet.fit$beta != 0) %*% diag(length(grid):1) 
+# temp[i] = 101 - j for the smallest j such that beta[i,j] != 0 
+temp = apply(temp, 1, max) # row-wise maximum
+df = data.frame(stability = (freq[,] / B), 
+                lasso.entry = rank(-temp), # large temp[i] will have small rank
+                abs.beta.cv = abs(cvfit$glmnet.fit$beta[cvfit$lambda==cvfit$lambda.min]))
+df = df[order(df$stability, decreasing=TRUE),] # order by stability
+print(df)
+
+# the features selected by lambda_cv are not necessarily the most stable
+# the first features that enter via lasso are not necessarily the most stable
+```
+
+
+```{r}
+# get rankings (lasso.entry is already ranked)
+df[,1] = rank(-df[,1])
+df[,3] = rank(-df[,3])
+# reformat data into ranking data
+ranking = c()
+criterion = c()
+feature = c()
+for (i in 1:nrow(df)) {
+  for (j in 1:ncol(df)) {
+    k = (i-1)*ncol(df) + j
+    ranking[k] = df[i, j]
+    criterion[k] = colnames(df)[j]
+    feature[k] = row.names(df)[i]
+  }
+}
+
+df = data.frame(ranking = ranking, criterion = criterion, feature = feature)
+
+# bump plot, compares the features with 
+# (1) the largest coefficients in beta_cv,
+# (2) the earliest appearing coefficients in the regularization path, and 
+# (3) the most stability.
+ggplot(df, aes(x = criterion, y = ranking, group = feature)) +
+  geom_line(aes(color = feature, alpha = 1), size = 2) +
+  geom_point(aes(color = feature, alpha = 1), size = 4) +
+  scale_y_reverse(breaks = 1:nrow(df))
+```
+

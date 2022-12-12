@@ -1,0 +1,4 @@
+"0","load(""data/sachs.Rdata"")"
+"0","p <- ncol(sachsdat)"
+"0","n <- nrow(sachsdat)"
+"0","sachscor <- cov2cor(sachscov)"

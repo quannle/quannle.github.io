@@ -1,0 +1,10 @@
+"0","library(ConsensusClusterPlus)"
+"0",""
+"0",""
+"0","results = ConsensusClusterPlus(t(pdat),maxK=6,reps=50,pItem=1,pFeature=1,"
+"0","clusterAlg=""km"",plot=""png"")"
+"2","Note: The km (kmeans) option only supports a euclidean distance metric when supplying a data matrix.  If you want to cluster a distance matrix, use a different algorithm such as 'hc' or 'pam'.  Changing distance to euclidean
+"
+"2","end fraction
+"
+"0","heatmap(results[[2]][[""consensusMatrix""]], labRow=rownames(pdat), labCol=rownames(pdat))"

@@ -1,0 +1,26 @@
+"0","load(""UnsupL_SISBID_2022.Rdata"")"
+"0","library(ggplot2)"
+"0","library(kknn)"
+"0","library(GGally)"
+"2","Registered S3 method overwritten by 'GGally':
+  method from   
+  +.gg   ggplot2
+"
+"0","library(umap)"
+"0","library(Rtsne)"
+"0","library(igraph)"
+"2","
+Attaching package: ‘igraph’
+
+"
+"2","The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+"
+"2","The following object is masked from ‘package:base’:
+
+    union
+
+"
+"0","library(huge)"

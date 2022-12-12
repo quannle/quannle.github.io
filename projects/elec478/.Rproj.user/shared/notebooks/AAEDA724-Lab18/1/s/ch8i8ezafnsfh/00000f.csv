@@ -1,0 +1,3 @@
+"0","# data from https://github.com/DataSlingers/clustRviz/tree/master/data"
+"0","load(""data/presidential_speech.rda"")"
+"0","pdat = presidential_speech"
