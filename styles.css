@@ -4,22 +4,23 @@ body {
   margin: 100px;
 }
 
-h1 {
+h1, h2, h3 {
   color: white;
   font-family: helvetica;
+  
+}
+
+h1 {
   font-weight: 700;
   font-size: 500%;
 }
-
-
+  
 h2 {
-  color: white;
-  font-family: helvetica;
   font-size: 200%;
 }
 
 
-p {
+p, li {
   color: white;
   font-family: helvetica;
   /* font-family: courier; */
