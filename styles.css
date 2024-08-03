@@ -23,12 +23,8 @@ h2 {
   display: flex;
 }
 
-.half {
-  flex: 50%;
-}
-
-.quarter {
-  flex: 25%;
+.column {
+  flex: 1;
 }
 
 
