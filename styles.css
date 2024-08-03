@@ -19,6 +19,14 @@ h2 {
   font-size: 200%;
 }
 
+.row {
+  display: flex;
+}
+
+.column {
+  flex: 25%;
+}
+
 
 p, li {
   color: white;
