@@ -19,8 +19,17 @@ h2 {
   font-size: 200%;
 }
 
+
+
 .row {
   display: flex;
+}
+
+.column {
+  flex: 1 1 0;
+  max-width: 50%;
+  min-width: 200px; /* Or any other minimum pixel size you prefer */
+  width: auto;
 }
 
 .column {
